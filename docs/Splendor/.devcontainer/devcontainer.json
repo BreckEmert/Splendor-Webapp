@@ -1,0 +1,36 @@
+// Splendor/.devcontainer/devcontainer.json
+{
+    "name": "SplendorDev",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".",
+        "args": {}
+    },
+    "runArgs": [
+        "--gpus", "all",
+        "--shm-size=1g",
+        "--ulimit", "memlock=-1",
+        "--ulimit", "stack=67108864",
+        // "--volume", "/tmp/.X11-unix:/tmp/.X11-unix:ro",
+        "--mount","type=bind,source=\\\\wsl.localhost\\Ubuntu\\mnt\\wslg\\.X11-unix,target=/tmp/.X11-unix,readonly",
+        "-e", "DISPLAY=:0",
+        "-e", "SDL_VIDEODRIVER=x11",
+        "-e", "SDL_AUDIODRIVER=dummy",
+        "-e", "SDL_RENDER_DRIVER=software"
+    ],
+    "workspaceFolder": "/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "customizations": {
+        "vscode": {
+            "settings": { 
+                "terminal.integrated.gpuAcceleration": "on",
+                "python.defaultInterpreterPath": "/usr/bin/python3"
+            },
+            "extensions": [
+                "ms-python.python",
+                "xyz.local-history"
+            ]
+        }
+    }, 
+    "remoteUser": "myuser"
+}
