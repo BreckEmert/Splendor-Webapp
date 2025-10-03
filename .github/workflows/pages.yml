@@ -1,0 +1,13 @@
+name: pages
+on: push
+permissions: { pages: write, id-token: write }
+concurrency: pages
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: mkdir -p site && cp -r webapp/* site/
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: site }
+      - uses: actions/deploy-pages@v4
