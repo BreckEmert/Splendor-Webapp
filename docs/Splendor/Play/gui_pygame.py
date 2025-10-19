@@ -75,8 +75,10 @@ class SplendorGUI:
         pygame.mixer.init(frequency=44100, channels=2, buffer=512)
         aud = Path(__file__).resolve().parent / "render" / "Resources" / "audio"
         self._sfx = {
-            "coins": [pygame.mixer.Sound(str(p)) for p in (aud/"coins").glob("coin_*.ogg")],
-            "cards": [pygame.mixer.Sound(str(p)) for p in (aud/"cards").glob("card_pull_*.ogg")]
+            "coins": [pygame.mixer.Sound(str(p)) for p in
+                      (aud/"coins").glob("coin_*.ogg")],
+            "cards": [pygame.mixer.Sound(str(p)) for p in
+                      (aud/"cards").glob("card_pull_*.ogg")]
         }
         for s in (self._sfx["coins"] + self._sfx["cards"]):
             s.set_volume(0.6)

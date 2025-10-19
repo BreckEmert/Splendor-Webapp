@@ -12,3 +12,4 @@ Splendor/next_states.csv
 /Splendor/meta/To-Do list.txt
 /Splendor/RL/saved_files/memory.pkl
 /docs/Splendor/RL/trained_agents/old_models
+docs/Splendor/RL/trained_agents/probe.py

@@ -2,7 +2,6 @@
 
 import os
 import itertools as it
-from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 
