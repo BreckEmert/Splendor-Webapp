@@ -1,11 +1,11 @@
-# webapp/webstage.py
+# docs/webstage.py
 from pathlib import Path
 import shutil, subprocess, sys
 
-APP = Path(__file__).resolve().parent  # .../Splendor-AI/webapp
+APP = Path(__file__).resolve().parent  # .../Splendor-AI/docs
 ROOT = APP.parent  # repo root
 SRC  = ROOT / "Splendor"  # top-level package
-DST  = APP / "Splendor"  # vendored package inside webapp
+DST  = APP / "Splendor"  # vendored package inside docs
 
 WEIGHTS_SRC = SRC / "RL" / "trained_agents" / "inference_model.npz"
 WEIGHTS_DST = DST / "RL" / "trained_agents" / "inference_model.npz"
@@ -24,7 +24,7 @@ if not SRC.exists():
 if DST.exists():
     shutil.rmtree(DST)
 shutil.copytree(SRC, DST, ignore=ignore)
-print("[stage] Copied Splendor ->", DST)
+print("[stage] Copied Splendor to ", DST)
 
 # Weights
 if WEIGHTS_SRC.exists():
@@ -32,7 +32,7 @@ if WEIGHTS_SRC.exists():
     shutil.copy2(WEIGHTS_SRC, WEIGHTS_DST)
     print("[stage] Copied weights to", WEIGHTS_DST)
 else:
-    print("[stage] NOTE: weights not found, skipping:", WEIGHTS_SRC)
+    print("[stage] Weights not found, skipping:", WEIGHTS_SRC)
 
 # Build
 cmd = ["pygbag", "--PYBUILD", "3.12", str(APP / "main.py")]

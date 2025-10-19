@@ -11,3 +11,4 @@ Splendor/next_states.csv
 /Splendor/RL/saved_files/tensorboard_logs
 /Splendor/meta/To-Do list.txt
 /Splendor/RL/saved_files/memory.pkl
+/docs/Splendor/RL/trained_agents/old_models
