@@ -15,14 +15,8 @@ from Splendor.Play.render import BoardGeometry, Coord, Rect, FONT_PATH
 
 class OverlayRenderer:
     def __init__(self, window):
-        """To implement:
-        1) glow around most recently purchased card or taken gems
-        """
         self.geom = BoardGeometry()
         self.window = window
-        # self.font = pygame.font.SysFont(None, 32)
-        # self.small_font = pygame.font.SysFont(None, 28)
-        # self.card_font = pygame.font.SysFont(None, 24)
         self.font = pygame.font.Font(str(FONT_PATH), 44)
         self.small_font = pygame.font.Font(str(FONT_PATH), 36)
         self.card_font = pygame.font.Font(str(FONT_PATH), 32)

@@ -4,12 +4,16 @@ import numpy as np
 
 
 class InferenceModel:
-    """Numpy-only MLP for inference"""
+    """
+    Minimal numpy-only MLP for inference.
+    Expects a 3-layer MLP (2 hidden + 1 linear action head) but works with any depth.
+    """
 
     def __init__(self, weights_path: str, leaky_slope: float = 0.3):
-        """Load weights from an .npz"""
-        # keys look like W1,b1,W2,b2,... (W are [in,out], b are [out])
+        # Load weights from an .npz:
+        # keys: W1,b1,W2,b2,...,Wk,bk (W are [in,out], b are [out])
         data = np.load(weights_path, allow_pickle=False)
+        # Collect in order W1..Wk, b1..bk
         Ws, bs = [], []
         i = 1
         while f"W{i}" in data and f"b{i}" in data:

@@ -1,11 +1,15 @@
 # docs/webstage.py
+# Stage so that GitHub Pages works, which requires "docs" folder
+print(f"[debug] running {__file__}")
+
 from pathlib import Path
 import shutil, subprocess, sys
 
 APP = Path(__file__).resolve().parent  # .../Splendor-AI/docs
+print(APP)
 ROOT = APP.parent  # repo root
-SRC  = ROOT / "Splendor"  # top-level package
-DST  = APP / "Splendor"  # vendored package inside docs
+SRC = ROOT / "Splendor"  # top-level package
+DST = APP / "Splendor"  # vendored package inside docs
 
 WEIGHTS_SRC = SRC / "RL" / "trained_agents" / "inference_model.npz"
 WEIGHTS_DST = DST / "RL" / "trained_agents" / "inference_model.npz"
@@ -24,7 +28,7 @@ if not SRC.exists():
 if DST.exists():
     shutil.rmtree(DST)
 shutil.copytree(SRC, DST, ignore=ignore)
-print("[stage] Copied Splendor to ", DST)
+print("[stage] Copied Splendor to", DST)
 
 # Weights
 if WEIGHTS_SRC.exists():

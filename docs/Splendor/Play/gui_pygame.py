@@ -94,7 +94,7 @@ class SplendorGUI:
         self._discard_state = False
 
     def _is_gem_click_allowed(self, color: int) -> bool:
-        """Click is allowed if 4 Splendor rules pass."""
+        """Click allowed if 4 Splendor rules pass."""
         supply = self.game.board.gems[color]
         picked = self._take_picks
 
@@ -263,10 +263,8 @@ class SplendorGUI:
         elif event.type == pygame.USEREVENT and self._awaiting_ai:
             self._awaiting_ai = False
         elif event.type == pygame.QUIT:
-            print("Exiting through pygame.QUIT")
             self.running = False
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            print("Exiting through pygame.KEYDOWN")
             self.running = False
 
     def _card_menu_options(self, focus: FocusTarget) -> list[tuple[str, GUIMove]]:
@@ -388,18 +386,16 @@ class SplendorGUI:
         if not self.running:
             return
 
-        # Outer main() sets up pygame/init/window.
         if self.window is None:
             self.window = pygame.display.get_surface()
             if self.window is None:
                 return
 
-        # Lazily create overlay once we have a window.
         if not hasattr(self, "overlay"):
             self.overlay = OverlayRenderer(self.window)
             pygame.display.set_caption("Splendor RL - Human vs DDQN")
     
-        # 1) Ensure we have a fresh clickmap and cached base frame
+        # 1) Fresh clickmap and cached base frame
         scene_stamp = self.game.half_turns
         if self._scene_stamp != scene_stamp or self._base_frame is None:
             self.clickmap, pil_img = self._renderer.render(self.game)
@@ -409,7 +405,7 @@ class SplendorGUI:
             )
             self._scene_stamp = scene_stamp
 
-        # 2) Now poll events using the current clickmap
+        # 2) Poll events using the clickmap
         for event in pygame.event.get():
             self._handle_event(event)
 
@@ -427,7 +423,7 @@ class SplendorGUI:
             self.running = False
             return
 
-        # Skip further logic when display is locked
+        # Skip any further logic if locked
         if self.lock.active:
             pygame.display.flip()
             return
@@ -451,7 +447,7 @@ class SplendorGUI:
                 cur = ss["spend"][:5].sum() + ss["spend"][5]
                 confirm_enabled = (cur == need)
                 move = GUIMove(
-                    kind="reserve",  # Engine should treat reserve+discard properly
+                    kind="reserve",  # Kind of the wrong move.kind, but engine will treat reserve+discard properly
                     card=ss["card"],
                     source=ss["focus"],
                     spend=None,
@@ -480,9 +476,7 @@ class SplendorGUI:
                 case "shop":
                     origin = next(
                         (Coord(r.x0, r.y0) for r, p in self.clickmap.items()
-                         if p == ("board_card",
-                                  self._focus_target.tier,
-                                  self._focus_target.pos)),
+                         if p == ("board_card", self._focus_target.tier, self._focus_target.pos)),
                         None,
                     )
                 case "deck":
@@ -494,8 +488,7 @@ class SplendorGUI:
                 case "reserved":
                     origin = next(
                         (Coord(r.x0, r.y0) for r, p in self.clickmap.items()
-                         if p[0] == "reserved_card"
-                         and p[1] == self._focus_target.reserve_idx),
+                         if p[0] == "reserved_card" and p[1] == self._focus_target.reserve_idx),
                         None,
                     )
 
@@ -521,7 +514,7 @@ class SplendorGUI:
         pygame.display.flip()
 
     def run(self):
-        """Desktop wrapper that runs one non-blocking frame per iteration."""
+        """Wrapper that runs one non-blocking frame per iteration."""
         pygame.init()
         self.window = pygame.display.set_mode(
             BoardGeometry().canvas,

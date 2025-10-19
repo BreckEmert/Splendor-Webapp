@@ -19,7 +19,7 @@ from Splendor.Play.render import (
 
 
 def pil_to_surface(pil_image):
-    img = pil_image.convert("RGB")  # force predictable mode
+    img = pil_image.convert("RGB")
     return pygame.image.fromstring(img.tobytes(), img.size, "RGB")
 
 class UILock:
