@@ -73,7 +73,6 @@ class InferenceModel:
         return x @ self.W_out + self.b_out
 
     def get_predictions(self, state: np.ndarray, legal_mask: np.ndarray) -> np.ndarray:
-        # Q-values
         qs = self._forward(state)
         qs = qs.astype(np.float32, copy=False)
         qs[~legal_mask] = -np.inf
