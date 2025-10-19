@@ -1,4 +1,4 @@
-# webapp/sitecustomize.py
+# docs/sitecustomize.py
 
 import asyncio
 from js import console  # type: ignore

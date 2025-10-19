@@ -1,10 +1,11 @@
 
 *.pyc
 /Splendor/Environment/Splendor_components/Board_components/__pycache__
-/Splendor/RL/trained_agents
+/Splendor/RL/trained_agents/old_models
+/Splendor/RL/trained_agents/probe.py
 /Splendor/meta/images_backup
-Splendor/states.csv
-Splendor/next_states.csv
+/Splendor/states.csv
+/Splendor/next_states.csv
 *.pkl
 /Splendor/RL/saved_files/rendered_games
 /Splendor/RL/saved_files/game_states
@@ -12,4 +13,4 @@ Splendor/next_states.csv
 /Splendor/meta/To-Do list.txt
 /Splendor/RL/saved_files/memory.pkl
 /docs/Splendor/RL/trained_agents/old_models
-docs/Splendor/RL/trained_agents/probe.py
+/docs/Splendor/RL/trained_agents/probe.py

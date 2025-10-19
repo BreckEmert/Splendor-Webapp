@@ -43,3 +43,11 @@ cmd = ["pygbag", "--PYBUILD", "3.12", str(APP / "main.py")]
 print("[build]", " ".join(cmd))
 subprocess.check_call(cmd)
 print("[done] Built:", APP / "build" / "web")
+
+# Move the built APK
+built = APP / "build" / "web" / "webapp.apk"
+target = APP / "webapp.apk"
+if not built.exists():
+    raise SystemExit(f"[error] Built APK missing: {built}")
+shutil.copy2(built, target)
+print(f"[stage] Updated {target} to {target.stat().st_size} bytes")
