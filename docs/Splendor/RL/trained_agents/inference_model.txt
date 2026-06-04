@@ -1,6 +1,5 @@
-Exported Dense layers (W: [in,out], b: [out])
-dense1_W: (251, 512), dense1_b: (512,)
-dense2_W: (512, 512), dense2_b: (512,)
-dense3_W: (512, 256), dense3_b: (256,)
-advantage_W: (256, 141), advantage_b: (141,)
-value_W: (256, 1), value_b: (1,)
+trunk -> dense{i}, output -> q
+dense1_W: (251, 512)
+dense2_W: (512, 512)
+dense3_W: (512, 256)
+q_W: (256, 141)
