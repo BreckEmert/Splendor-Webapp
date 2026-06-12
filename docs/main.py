@@ -28,6 +28,7 @@ try:
     from Splendor.Play.gui_pygame import SplendorGUI
     from Splendor.Play.render import BoardGeometry
     from Splendor.RL import InferenceModel
+    from Splendor.RL.search_model import SearchModel
     log("[boot] game modules imported OK")
 except Exception:
     import traceback
@@ -41,6 +42,53 @@ def _resolve_model_path() -> str:
     if env:
         return env
     return str(files("Splendor.RL.trained_agents") / "inference_model.npz")
+
+
+def _resolve_value_path() -> str:
+    return str(files("Splendor.RL.trained_agents") / "inference_critic.npz")
+
+
+# Difficulty = how many search simulations the AI runs per move
+# (0 = plain net move).
+DIFFICULTIES = [
+    ("Easy", 0),
+    ("Medium", 50),
+    ("Hard", 400),
+]
+
+
+async def choose_difficulty(clock) -> int:
+    """Pre-game menu: three buttons, returns the chosen sims count."""
+    surf = pygame.display.get_surface()
+    W, H = surf.get_size()
+    title_font = pygame.font.SysFont(None, int(H * 0.07))
+    btn_font = pygame.font.SysFont(None, int(H * 0.045))
+
+    bw, bh, gap = int(W * 0.22), int(H * 0.14), int(W * 0.04)
+    total = 3 * bw + 2 * gap
+    x0, y0 = (W - total) // 2, int(H * 0.45)
+    rects = [pygame.Rect(x0 + i * (bw + gap), y0, bw, bh) for i in range(3)]
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                for i, r in enumerate(rects):
+                    if r.collidepoint(event.pos):
+                        return DIFFICULTIES[i][1]
+
+        surf.fill((24, 28, 36))
+        t = title_font.render("Choose difficulty", True, (235, 235, 235))
+        surf.blit(t, t.get_rect(center=(W // 2, int(H * 0.3))))
+        for i, r in enumerate(rects):
+            name = DIFFICULTIES[i][0]
+            hover = r.collidepoint(pygame.mouse.get_pos())
+            pygame.draw.rect(surf, (70, 110, 90) if hover else (52, 64, 84),
+                             r, border_radius=10)
+            n = btn_font.render(name, True, (240, 240, 240))
+            surf.blit(n, n.get_rect(center=r.center))
+        pygame.display.flip()
+        clock.tick(60)
+        await asyncio.sleep(0)
 
 
 async def render_pause(ms, gui, clock):
@@ -60,14 +108,19 @@ async def main():
     log(f"[pygame] set_mode OK, surface={surf.get_size()}")
     clock = pygame.time.Clock()
 
-    # Agents + game (real inference model)
+    # Difficulty menu (sims per AI move; 0 = plain net, instant)
+    sims = await choose_difficulty(clock)
+    log(f"[boot] difficulty selected: {sims} sims/move")
+
+    # Agents + game (policy net + value net; searches when sims > 0)
     model_path = _resolve_model_path()
     log(f"[boot] loading model: {model_path}")
-    rl_agent = InferenceModel(model_path)
+    rl_agent = SearchModel(model_path, _resolve_value_path(), sims=sims)
     human = HumanAgent()
     players = [("DDQN", rl_agent, 0), ("Human", human, 1)]
 
     game = GUIGame(players, rl_agent)
+    rl_agent.bind(game)
     gui = SplendorGUI(game, human)
 
     running = True
